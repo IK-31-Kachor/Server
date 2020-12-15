@@ -26,7 +26,7 @@ def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
-        handle = open("output.txt", "w")
+        handle = open("output.txt", "a")
         handle.write(f"`{msg.payload.decode()}`")
         handle.close()
 

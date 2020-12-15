@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for,app
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -41,10 +41,10 @@ def login_page():
 
             return redirect(next_page)
         else:
-            flash('Login or password is not correct')
+            flash('Login or password is not correct','error')
 
     else:
-        flash('Please fill login and password fields')
+        flash('Please fill login and password fields','error')
 
     return render_template('login.html')
 
@@ -58,9 +58,9 @@ def register():
 
     if request.method == 'POST':
         if not (login or password or password2):
-            flash('Please fill all fields')
+            flash('Please fill all fields','error')
         elif password != password2:
-            flash('Password are not equal!')
+            flash('Password are not equal!', 'error')
         else:
              hash_pwd = generate_password_hash(password)
              new_user = User(login=login, password=hash_pwd)
@@ -104,6 +104,13 @@ def mqtt():
     print("python -u mqtt.py > output.txt")
 
     return render_template("Mqtt.html", title=title)
+
+
+@app.route('/info')
+@login_required
+def content():
+    title = "InFo"
+    return render_template("info.html", title=title)
 
 
 if __name__ == "__main__":
